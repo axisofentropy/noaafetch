@@ -14,6 +14,9 @@ from datetime import datetime, timedelta
 from requests import get
 from re import search
 
+from flask import Flask, make_response
+app = Flask(__name__)
+
 def chronological_plan ():
     '''Plan a list of ten UTC datetimes, one hour apart in reverse.'''
     plan = []
@@ -45,21 +48,26 @@ def parse_nbm (text, station, length):
         if search(pattern, lines[i]):
             return ('\n').join(lines[i:i+length])
 
-if __name__ == "__main__":
-    t = fetch_plan(url_plan(chronological_plan(), NBH_URL_TEMPLATE))
-    print(parse_nbm(t, "KBNA", NBH_LENGTH))
+@app.route('/')
+def hello_world():
+    return '/api/KBNA'
 
-    print()
+@app.route('/api/<station>')
+def fetch_four_nbm(station):
+    output = ""
+
+    t = fetch_plan(url_plan(chronological_plan(), NBH_URL_TEMPLATE))
+    output = output + parse_nbm(t, station, NBH_LENGTH) + '\n\n'
 
     t = fetch_plan(url_plan(chronological_plan(), NBS_URL_TEMPLATE))
-    print(parse_nbm(t, "KBNA", NBS_LENGTH))
-
-    print()
+    output = output + parse_nbm(t, station, NBS_LENGTH) + '\n\n'
 
     t = fetch_plan(url_plan(chronological_plan(), NBE_URL_TEMPLATE))
-    print(parse_nbm(t, "KBNA", NBE_LENGTH))
-
-    print()
+    output = output + parse_nbm(t, station, NBE_LENGTH) + '\n\n'
 
     t = fetch_plan(url_plan(chronological_plan(), NBX_URL_TEMPLATE))
-    print(parse_nbm(t, "KBNA", NBX_LENGTH))
+    output = output + parse_nbm(t, station, NBX_LENGTH)
+
+    r = make_response(output)
+    r.headers['Content-Type'] = 'text/plain'
+    return r
