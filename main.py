@@ -56,6 +56,8 @@ def hello_world():
 def fetch_four_nbm(station):
     output = ""
 
+    station = station.upper()
+
     t = fetch_plan(url_plan(chronological_plan(), NBH_URL_TEMPLATE))
     output = output + parse_nbm(t, station, NBH_LENGTH) + '\n\n'
 
