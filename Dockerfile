@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-alpine
 
 LABEL maintainer="Adam Vollrath adam.d.vollrath@gmail.com"
 LABEL org.opencontainers.image.authors="adam.d.vollrath@gmail.com"
