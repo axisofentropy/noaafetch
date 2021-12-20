@@ -1,0 +1,10 @@
+services:
+  noaafetch:
+    image: axisofentropy/noaafetch
+
+continuous_preview:
+  deploy_preview_when_image_tag_is_created: true
+
+ingress:
+  service: noaafetch
+  port: 5000
