@@ -1,14 +1,15 @@
-from python:3
+FROM python:3
 
-MAINTAINER Adam Vollrath "axisofentropy@gmail.com"
+LABEL maintainer="Adam Vollrath adam.d.vollrath@gmail.com"
+LABEL org.opencontainers.image.authors="adam.d.vollrath@gmail.com"
 
 WORKDIR /app
 
-ADD requirements.txt /app
+COPY requirements.txt /app
 
 RUN pip3 install -r requirements.txt
 
-ADD main.py /app
+COPY main.py /app
 
 EXPOSE 5000
 
