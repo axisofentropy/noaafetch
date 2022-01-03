@@ -30,7 +30,7 @@ Build:
   stage: build
   script:
     # fetches the latest image (not failing if image is not found)
-    - docker pull $AZURE_REGISTRY/$CI_PROJECT_ID:latest || true
+    - docker pull $AZURE_REGISTRY/$CI_PROJECT_NAME:latest || true
     # builds the project, passing proxy variables, using OCI labels
     # notice the cache-from, which is going to use the image we just pulled locally
     # the built image is tagged locally with the commit SHA, and then pushed to 
@@ -41,15 +41,15 @@ Build:
       --build-arg http_proxy=$http_proxy
       --build-arg https_proxy=$https_proxy
       --build-arg no_proxy=$no_proxy
-      --cache-from $AZURE_REGISTRY/$CI_PROJECT_ID:latest
+      --cache-from $AZURE_REGISTRY/$CI_PROJECT_NAME:latest
       --label "org.opencontainers.image.title=$CI_PROJECT_TITLE"
       --label "org.opencontainers.image.url=$CI_PROJECT_URL"
       --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
       --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
       --label "org.opencontainers.image.version=$CI_COMMIT_REF_NAME"
-      --tag $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA
+      --tag $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA
       .
-    - docker push $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA
+    - docker push $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA
 
 # Here, the goal is to tag the `master` or `main` branch as `latest`.
 Push latest:
@@ -65,11 +65,11 @@ Push latest:
   script:
     # Because we have no guarantee that this job will be picked up by the same runner 
     # that built the image in the previous step, we pull it again locally
-    - docker pull $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA
+    - docker pull $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA
     # Then we tag it "latest"
-    - docker tag $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker tag $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA $AZURE_REGISTRY/$CI_PROJECT_NAME:latest
     # Annnd we push it.
-    - docker push $AZURE_REGISTRY/$CI_PROJECT_ID:latest
+    - docker push $AZURE_REGISTRY/$CI_PROJECT_NAME:latest
 
 # Finally, the goal here is to Docker tag any Git tag
 # GitLab will start a new pipeline everytime a Git tag is created, which is pretty awesome
@@ -82,6 +82,6 @@ Push tag:
     # We want this job to be run on tags only.
     - tags
   script:
-    - docker pull $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA
-    - docker tag $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - docker push $AZURE_REGISTRY/$CI_PROJECT_ID:$CI_COMMIT_REF_NAME
+    - docker pull $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA
+    - docker tag $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHA $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
+    - docker push $AZURE_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
