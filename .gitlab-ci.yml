@@ -28,6 +28,11 @@ before_script:
 
 Build:
   stage: build
+  only:
+    - master
+    - main
+    - merge_requests
+    - tags
   script:
     # fetches the latest image (not failing if image is not found)
     - docker pull $AZURE_REGISTRY/$CI_PROJECT_NAME:latest || true
