@@ -24,6 +24,10 @@ before_script:
   # docker login asks for the password to be passed through stdin for security
   # we use $CI_REGISTRY_PASSWORD here which is a special variable provided by GitLab
   # https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
+  - df
+  - cat /etc/resolv.conf
+  - echo $AZURE_REGISTRY
+  - cat /etc/hosts
   - echo -n $AZURE_SP_PASSWORD | docker login --username $AZURE_SP --password-stdin $AZURE_REGISTRY
 
 Build:
