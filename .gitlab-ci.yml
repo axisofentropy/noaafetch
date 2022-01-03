@@ -24,7 +24,7 @@ before_script:
   # docker login asks for the password to be passed through stdin for security
   # we use $CI_REGISTRY_PASSWORD here which is a special variable provided by GitLab
   # https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
-  - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  - echo -n $AZURE_SP_PASSWORD | docker login --username $AZURE_SP --password-stdin $AZURE_REGISTRY
 
 Build:
   stage: build
@@ -51,7 +51,7 @@ Build:
       .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
-# Here, the goal is to tag the "master" branch as "latest"
+# Here, the goal is to tag the `master` or `main` branch as `latest`.
 Push latest:
   variables:
     # We are just playing with Docker here. 
@@ -59,8 +59,9 @@ Push latest:
     GIT_STRATEGY: none
   stage: push
   only:
-    # Only "master" should be tagged "latest"
+    # Only `master` and `main` should be tagged `latest`
     - master
+    - main
   script:
     # Because we have no guarantee that this job will be picked up by the same runner 
     # that built the image in the previous step, we pull it again locally
