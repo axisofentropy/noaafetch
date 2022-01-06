@@ -8,7 +8,7 @@ x-uffizzi:
 services:
   noaafetch:
     image: uffizziqa.azurecr.io/noaafetch
-  deploy:
-    resources:
-      limits:
-        memory: 250M
+    deploy:
+      resources:
+        limits:
+          memory: 250M
