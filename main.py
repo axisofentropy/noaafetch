@@ -50,7 +50,7 @@ def parse_nbm (text, station, length):
 
 @app.route('/')
 def hello_world():
-    return 'example URL: <a href="/api/KBNA">/api/KBNA</a> <br/> <a href="https://vlab.ncep.noaa.gov/web/mdl/nbm-textcard-v4.0">Text key</a>'
+    return 'example URL: <a href="/api/KBNA">/api/KBNA</a> <br/> <a href="https://vlab.noaa.gov/web/mdl/nbm-textcard-v4.0">Text key</a>'
 
 @app.route('/api/<station>')
 def fetch_four_nbm(station):
