@@ -7,4 +7,4 @@ x-uffizzi:
 
 services:
   noaafetch:
-    image: axisofentropy/noaafetch
+    image: uffizziqa.azurecr.io/noaafetch
