@@ -16,3 +16,5 @@ jobs:
           hostname: 'https://app.qa-gke.uffizzi.com'
           project: 'default-adam'
           password: ${{ secrets.UFFIZZI_PASSWORD }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
