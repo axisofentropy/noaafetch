@@ -14,5 +14,5 @@ jobs:
           compose-file: 'docker-compose.uffizzi.yml'
           username: 'adam@idyl.tech'
           hostname: 'https://app.qa-gke.uffizzi.com'
-          project: 'default-2'
+          project: 'default-adam'
           password: ${{ secrets.UFFIZZI_PASSWORD }}
