@@ -1,0 +1,17 @@
+name: default
+
+on: [push]
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v2
+      - name: Deploy preview
+        uses: UffizziCloud/preview-action@v0
+        with:
+          compose-file: 'docker-compose.uffizzi.yml'
+          username: 'adam@idyl.tech'
+          hostname: 'https://app.qa-gke.uffizzi.com'
+          project: 'default-2'

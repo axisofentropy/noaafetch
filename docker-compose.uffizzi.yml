@@ -7,7 +7,7 @@ x-uffizzi:
 
 services:
   noaafetch:
-    image: uffizziqa.azurecr.io/noaafetch
+    image: axisofentropy/noaafetch
     deploy:
       resources:
         limits:
