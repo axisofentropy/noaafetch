@@ -11,7 +11,7 @@ jobs:
       - name: Deploy preview
         uses: UffizziCloud/preview-action@master
         with:
-          compose-file: 'docker-compose.uffizzi.yml'
+          compose-file: 'docker-compose.yaml'
           username: 'adam@idyl.tech'
           hostname: 'https://app.qa-gke.uffizzi.com'
           project: 'second-adam-zezw'
