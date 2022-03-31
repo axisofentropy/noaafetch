@@ -31,11 +31,29 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: axisofentropy/noaafetch
+      - name: Prep temporary compose file.
+        run: |
+          mkdir ./tmp &&
+          cat <<EOF > ./tmp/docker-compose.generated.yaml
+          x-uffizzi:
+            ingress:
+              service: noaafetch
+              port: 5000
+            continuous_preview:
+              deploy_preview_when_image_tag_is_created: true
+          services:
+            noaafetch:
+              image: axisofentropy/noaafetch:${{ steps.meta.outputs.tags }}
+              deploy:
+                resources:
+                  limits:
+                    memory: 500M
+          EOF
       - name: Deploy preview
         id: preview
         uses: UffizziCloud/preview-action@outputs
         with:
-          compose-file: 'docker-compose.yaml'
+          compose-file: 'tmp/docker-compose.generated.yaml'
           username: 'admin@uffizzi.com'
           hostname: 'https://tmp-eks-2022-04.uffizzi.com/'
           project: 'default'
