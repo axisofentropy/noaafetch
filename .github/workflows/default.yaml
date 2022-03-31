@@ -43,7 +43,7 @@ jobs:
               deploy_preview_when_image_tag_is_created: true
           services:
             noaafetch:
-              image: axisofentropy/noaafetch:${{ steps.meta.outputs.tags }}
+              image: ${{ steps.meta.outputs.tags }}
               deploy:
                 resources:
                   limits:
