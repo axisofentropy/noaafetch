@@ -32,10 +32,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: axisofentropy/noaafetch
       - name: Deploy preview
-        uses: UffizziCloud/preview-action@master
+        id: preview
+        uses: UffizziCloud/preview-action@outputs
         with:
           compose-file: 'docker-compose.yaml'
-          username: 'adam@idyl.tech'
-          hostname: 'https://app.qa-gke.uffizzi.com'
-          project: 'second-adam-zezw'
+          username: 'admin@uffizzi.com'
+          hostname: 'https://tmp-eks-2022-04.uffizzi.com/'
+          project: 'default'
           password: ${{ secrets.UFFIZZI_PASSWORD }}
+      - name: Check outputs
+        run: echo "${{ steps.preview.outputs.id }} at ${{ steps.preview.outputs.url }}"
