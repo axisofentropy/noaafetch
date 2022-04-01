@@ -1,6 +1,12 @@
 name: default
 
-on: [push,pull_request]
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    types: [opened,synchronize,reopened]
 
 jobs:
   example:
@@ -60,3 +66,9 @@ jobs:
           password: ${{ secrets.UFFIZZI_PASSWORD }}
       - name: Check outputs
         run: echo "${{ steps.preview.outputs.id }} at ${{ steps.preview.outputs.url }}"
+      - name: Comment on Pull Request
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: "Deployed preview ID ${{ steps.preview.outputs.id }} at URL ${{ steps.preview.outputs.url }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
