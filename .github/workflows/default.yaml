@@ -55,9 +55,9 @@ jobs:
                   limits:
                     memory: 500M
           EOF
-      - name: Deploy preview
+      - name: Deploy preview on Uffizzi
         id: preview
-        uses: UffizziCloud/preview-action@outputs
+        uses: UffizziCloud/preview-action@v1
         with:
           compose-file: 'tmp/docker-compose.generated.yaml'
           username: 'admin@uffizzi.com'
