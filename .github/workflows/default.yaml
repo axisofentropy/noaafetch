@@ -1,6 +1,12 @@
 name: default
 
-on: [push,pull_request]
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    types: [opened,synchronize,reopened]
 
 jobs:
   example:
@@ -49,14 +55,20 @@ jobs:
                   limits:
                     memory: 500M
           EOF
-      - name: Deploy preview
+      - name: Deploy preview on Uffizzi
         id: preview
-        uses: UffizziCloud/preview-action@outputs
+        uses: UffizziCloud/preview-action@v1
         with:
           compose-file: 'tmp/docker-compose.generated.yaml'
           username: 'admin@uffizzi.com'
-          hostname: 'https://tmp-eks-2022-04.uffizzi.com/'
+          server: 'https://tmp-eks-2022-04.uffizzi.com/'
           project: 'default'
           password: ${{ secrets.UFFIZZI_PASSWORD }}
       - name: Check outputs
         run: echo "${{ steps.preview.outputs.id }} at ${{ steps.preview.outputs.url }}"
+      - name: Comment on Pull Request
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: "Deployed preview ID ${{ steps.preview.outputs.id }} at URL ${{ steps.preview.outputs.url }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
