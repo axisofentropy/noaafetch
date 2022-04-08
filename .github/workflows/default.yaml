@@ -61,7 +61,7 @@ jobs:
         with:
           compose-file: 'tmp/docker-compose.generated.yaml'
           username: 'admin@uffizzi.com'
-          hostname: 'https://tmp-eks-2022-04.uffizzi.com/'
+          server: 'https://tmp-eks-2022-04.uffizzi.com/'
           project: 'default'
           password: ${{ secrets.UFFIZZI_PASSWORD }}
       - name: Check outputs
